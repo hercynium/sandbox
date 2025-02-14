@@ -13,23 +13,27 @@ jobs:
     runs-on: ubuntu-latest  # windows-latest || macos-latest
     name: Test changed-files
     steps:
-      - uses: actions/checkout@v4
+      - name: checkout repo
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
-          fetch-tags: true  # to get tags
-      - name: Get changed files
+          fetch-tags: true  # to ensure we get tags
+      - name: get changed files
         id: changed-files
         uses: tj-actions/changed-files@v45
         with:
           files_from_source_file: 'auto-tag-dirs.txt'
-      - name: List all changed files
+      - name: list all changed files
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          git tag --list
-          for file in ${ALL_CHANGED_FILES}; do
-            echo "$file was changed"
-          done
+          git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
+          cat tag-prefixes.txt
+          echo "${ALL_CHANGED_FILES}" > changed-files.txt
+          cat changed-files.txt
+          #for file in ${ALL_CHANGED_FILES}; do
+          #  echo "$file was changed"
+          #done
   get_new_version:
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +41,7 @@ jobs:
       id: bump_version
       uses: christian-draeger/increment-semantic-version@1.2.3
       with:
-        current-version: ${{ env.CURRENT_VERSION_TOP_LEVEL }} # also accepted: 'v2.11.7-alpha.3' | '2.11.7-alpha3'
+        current-version: ${{ env.CURRENT_VERSION_TOP_LEVEL }}
         version-fragment: 'patch'
     - name: Do something with your bumped release version
-      run: echo ${{ steps.bump_version.outputs.next-version }} # will print 2.12.0
+      run: echo ${{ steps.bump_version.outputs.next-version }}
