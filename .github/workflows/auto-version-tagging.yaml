@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest  # windows-latest || macos-latest
     name: Test changed-files
     outputs:
-      tags-to-change: ${{ steps.get_tags.outputs.tags }}
+      tags: ${{ steps.get_tags.outputs.tags }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
