@@ -27,15 +27,20 @@ jobs:
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
+          git tag --list > tags.txt
+          echo "### TAGS"
+          cat tags.txt
+
           git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
           echo "### TAG PREFIXES"
           cat tag-prefixes.txt
+
           echo "${ALL_CHANGED_FILES}" > changed-files.txt
           echo "### CHANGED FILES"
           cat changed-files.txt
-          #for file in ${ALL_CHANGED_FILES}; do
-          #  echo "$file was changed"
-          #done
+
+          echo "### PREFIXES MATCHING CHANGED FILES"
+          grep -o -f tag-prefixes.txt changed-files.txt
   get_new_version:
     runs-on: ubuntu-latest
     steps:
