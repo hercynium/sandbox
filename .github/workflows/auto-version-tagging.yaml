@@ -73,6 +73,9 @@ jobs:
   get_new_version:
     runs-on: ubuntu-latest
     needs: get_tag_version
+    strategy:
+      matrix:
+          tag: ${{fromJSON(needs.get_tags_to_update.outputs.tags)}}
     steps:
       - name: Bump release version
         id: bump_version
