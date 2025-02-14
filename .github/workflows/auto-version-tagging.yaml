@@ -52,6 +52,8 @@ jobs:
       - name: get tags to update
         id: get_tags
         run: |
+          echo "### TAGS TO UPDATE"
+          cat tags-to-update.txt
           echo "tags=$(cat tags-to-update.txt)" >> "$GITHUB_OUTPUT"
 
   job2:
