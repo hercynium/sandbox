@@ -70,20 +70,13 @@ jobs:
           echo "### VERSION: ${TAG##*/}"
           echo "version=${TAG##*/}" >> $GITHUB_OUTPUT
           echo "tag_base=${TAG%/*}" >> $GITHUB_OUTPUT
-  get_new_version:
-    runs-on: ubuntu-latest
-    needs: get_tag_version
-    strategy:
-      matrix:
-          tag: ${{fromJSON(needs.get_tags_to_update.outputs.tags)}}
-    steps:
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.2.3
         with:
-          current-version: ${{ needs.get_tag_version.outputs.version }}
+          current-version: ${{ steps.get_version.outputs.version }}
           version-fragment: 'patch'
       - name: Do something with your bumped release version
         run: |
-          echo "VERSION: ${{ steps.bump_version.outputs.next-version }}"
-          echo "TAG_BASE: ${{ needs.get_tag_version.outputs.tag_base }}"
+          echo "NEW_VERSION: ${{ steps.bump_version.outputs.next-version }}"
+          echo "TAG_BASE: ${{ steps.get_version.outputs.tag_base }}"
