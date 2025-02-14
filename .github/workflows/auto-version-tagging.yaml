@@ -5,7 +5,7 @@ on:
     branches:
     - main
 env:
-  CURRENT_VERSION_TOP_LEVEL: 'foo/bar/v2.11.7'
+  CURRENT_VERSION_TOP_LEVEL: 'v2.11.7'
 
 jobs:
   # ----------------------------------------------------------------------------------------------
@@ -19,6 +19,8 @@ jobs:
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@v45
+        with:
+          files_from_source_file: 'auto-tag-dirs.txt'
       - name: List all changed files
         env:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
