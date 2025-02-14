@@ -5,7 +5,7 @@ on:
     branches:
     - main
 env:
-  CURRENT_VERSION_TOP_LEVEL: 'v2.11.7-alpha.3'
+  CURRENT_VERSION_TOP_LEVEL: 'v2.11.7'
 
 jobs:
   deploy:
@@ -16,6 +16,6 @@ jobs:
       uses: christian-draeger/increment-semantic-version@1.2.3
       with:
         current-version: ${{ env.CURRENT_VERSION_TOP_LEVEL }} # also accepted: 'v2.11.7-alpha.3' | '2.11.7-alpha3'
-        version-fragment: 'feature'
+        version-fragment: 'patch'
     - name: Do something with your bumped release version
       run: echo ${{ steps.bump_version.outputs.next-version }} # will print 2.12.0
