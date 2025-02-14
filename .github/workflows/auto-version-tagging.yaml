@@ -25,7 +25,7 @@ jobs:
           files_from_source_file: 'auto-tag-dirs.txt'
       - name: list all changed files
         env:
-          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+          CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           git tag --list > tags.txt
           echo "### TAGS"
@@ -35,12 +35,17 @@ jobs:
           echo "### TAG PREFIXES"
           cat tag-prefixes.txt
 
-          echo "${ALL_CHANGED_FILES}" > changed-files.txt
+          echo "${CHANGED_FILES}" > changed-files.txt
           echo "### CHANGED FILES"
           cat changed-files.txt
 
           echo "### PREFIXES MATCHING CHANGED FILES"
-          grep -o -f tag-prefixes.txt changed-files.txt
+          grep -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt
+          cat matching-prefixes.txt
+
+          echo "### TAGS TO UPDATE"
+          grep -f matching-prefixes.txt tags.txt
+
   get_new_version:
     runs-on: ubuntu-latest
     steps:
