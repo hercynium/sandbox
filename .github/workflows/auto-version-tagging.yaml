@@ -54,7 +54,7 @@ jobs:
         run: |
           echo "tags=$(jq -R -s -c 'split("\n") | del(.[-1])' < tags-to-update.txt)" >> $GITHUB_OUTPUT
 
-  job2:
+  get_new_version:
     runs-on: ubuntu-latest
     needs: changed_files
     strategy:
@@ -62,17 +62,15 @@ jobs:
           tag: ${{fromJSON(needs.changed_files.outputs.tags)}}
     steps:
       - env:
-          OUTPUT1: ${{matrix.tag}}
-        run: echo "$OUTPUT1"
-
-  get_new_version:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Bump release version
-      id: bump_version
-      uses: christian-draeger/increment-semantic-version@1.2.3
-      with:
-        current-version: ${{ env.CURRENT_VERSION_TOP_LEVEL }}
-        version-fragment: 'patch'
-    - name: Do something with your bumped release version
-      run: echo ${{ steps.bump_version.outputs.next-version }}
+          TAG: ${{matrix.tag}}
+        run: |
+          echo "### TAG: $TAG"
+          VERSION="${TAG##*/}"
+      - name: Bump release version
+        id: bump_version
+        uses: christian-draeger/increment-semantic-version@1.2.3
+        with:
+          current-version: ${{ env.VERSION }}
+          version-fragment: 'patch'
+      - name: Do something with your bumped release version
+        run: echo ${{ steps.bump_version.outputs.next-version }}
