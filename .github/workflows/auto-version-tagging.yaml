@@ -53,8 +53,8 @@ jobs:
         id: get_tags
         run: |
           echo "### TAGS TO UPDATE"
-          echo "tags=[$(sed 's/(.*)/\"\1\"/' tags-to-update.txt)]"
-          echo "tags=[$(sed 's/(.*)/\"\1\"/' tags-to-update.txt)]" >> $GITHUB_OUTPUT
+          echo "tags=[$(sed 's/\(.*\)/\"\1\"/' tags-to-update.txt)]"
+          echo "tags=[$(sed 's/\(.*\)/\"\1\"/' tags-to-update.txt)]" >> $GITHUB_OUTPUT
 
   job2:
     runs-on: ubuntu-latest
