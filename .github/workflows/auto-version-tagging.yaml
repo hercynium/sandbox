@@ -53,6 +53,7 @@ jobs:
         id: get_tags
         run: |
           echo "### TAGS TO UPDATE"
+          jq -R -s -c 'split("\n")' < tags-to-update.txt
           echo "tags=[$(sed -e 's/^/\"/g' -e 's/$/\"/g' -e 's/\n/,/g' tags-to-update.txt)]"
           echo "tags=[$(sed -e 's/^/\"/g' -e 's/$/\"/g' -e 's/\n/,/g' tags-to-update.txt)]" >> $GITHUB_OUTPUT
 
