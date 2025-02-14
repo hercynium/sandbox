@@ -52,7 +52,7 @@ jobs:
       - name: get tags to update
         id: get_tags
         run: |
-          echo "tags=" $(cat tags-to-update.txt) >> "$GITHUB_OUTPUT"
+          echo "tags=$(cat tags-to-update.txt)" >> "$GITHUB_OUTPUT"
 
   job2:
     runs-on: ubuntu-latest
