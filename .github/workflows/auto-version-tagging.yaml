@@ -71,6 +71,7 @@ jobs:
   get_new_version:
     runs-on: ubuntu-latest
     needs: get_tag_version
+    steps:
       - name: Bump release version
         id: bump_version
         uses: christian-draeger/increment-semantic-version@1.2.3
