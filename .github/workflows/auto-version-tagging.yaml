@@ -19,17 +19,3 @@ jobs:
         version-fragment: 'feature'
     - name: Do something with your bumped release version
       run: echo ${{ steps.bump_version.outputs.next-version }} # will print 2.12.0
-  env-set-in-job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: set current version from file
-        id: set_current_version
-        run: echo "::set-env name=CURRENT_VERSION::$(cat version.txt)"
-      - name: Bump release version
-        id: bump_version
-        uses: christian-draeger/increment-semantic-version@1.2.0
-        with:
-          current-version: ${{ env.CURRENT_VERSION }} # also accepted: 'v2.11.7-alpha.3' | '2.11.7-alpha3'
-          version-fragment: 'feature'
-      - name: Do something with your bumped release version
-        run: echo ${{ steps.bump_version.outputs.next-version }} # will print 2.12.0
