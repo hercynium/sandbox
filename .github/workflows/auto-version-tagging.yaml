@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest  # windows-latest || macos-latest
     name: Test changed-files
     outputs:
-      tags-to-change: ${{ steps.get_tags.outputs }}
+      tags-to-change: ${{ steps.get_tags.outputs.tags }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -52,7 +52,7 @@ jobs:
       - name: get tags to update
         id: get_tags
         run: |
-          cat tags-to-update.txt
+          echo "tags=" $(cat tags-to-update.txt) >> "$GITHUB_OUTPUT"
 
   get_new_version:
     runs-on: ubuntu-latest
