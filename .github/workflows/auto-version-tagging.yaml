@@ -12,6 +12,8 @@ jobs:
   changed_files:
     runs-on: ubuntu-latest  # windows-latest || macos-latest
     name: Test changed-files
+    outputs:
+      tags-to-change: ${{ steps.get_tags.outputs }}
     steps:
       - name: checkout repo
         uses: actions/checkout@v4
@@ -27,16 +29,16 @@ jobs:
         env:
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          git tag --list > tags.txt
           echo "### TAGS"
+          git tag --list > tags.txt
           cat tags.txt
 
-          git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
           echo "### TAG PREFIXES"
+          git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
           cat tag-prefixes.txt
 
-          echo "${CHANGED_FILES}" > changed-files.txt
           echo "### CHANGED FILES"
+          echo "${CHANGED_FILES}" > changed-files.txt
           cat changed-files.txt
 
           echo "### PREFIXES MATCHING CHANGED FILES"
@@ -44,7 +46,13 @@ jobs:
           cat matching-prefixes.txt
 
           echo "### TAGS TO UPDATE"
-          grep -f matching-prefixes.txt tags.txt
+          grep -f matching-prefixes.txt tags.txt > tags-to-update.txt
+          cat tags-to-update.txt
+
+      - name: get tags to update
+        id: get_tags
+        run: |
+          cat tags-to-update.txt
 
   get_new_version:
     runs-on: ubuntu-latest
