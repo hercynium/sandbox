@@ -28,8 +28,10 @@ jobs:
           ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
+          echo "### TAG PREFIXES"
           cat tag-prefixes.txt
           echo "${ALL_CHANGED_FILES}" > changed-files.txt
+          echo "### CHANGED FILES"
           cat changed-files.txt
           #for file in ${ALL_CHANGED_FILES}; do
           #  echo "$file was changed"
