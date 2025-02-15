@@ -29,11 +29,11 @@ jobs:
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           echo "### TAGS"
-          git tag --list > tags.txt
+          git tag --list | sort -r > tags.txt
           cat tags.txt
 
           echo "### TAG PREFIXES"
-          git tag --list | sed 's|/[^/]*$||' | sort -r > tag-prefixes.txt
+          git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
           cat tag-prefixes.txt
 
           echo "### CHANGED FILES"
@@ -41,11 +41,11 @@ jobs:
           cat changed-files.txt
 
           echo "### PREFIXES MATCHING CHANGED FILES"
-          grep -m 1 -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt
+          grep -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt
           cat matching-prefixes.txt
 
           echo "### TAGS TO UPDATE"
-          grep -f matching-prefixes.txt tags.txt > tags-to-update.txt
+          grep -m 1 -f matching-prefixes.txt tags.txt > tags-to-update.txt
           cat tags-to-update.txt
 
       - name: get tags to update
