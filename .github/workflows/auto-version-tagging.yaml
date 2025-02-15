@@ -55,7 +55,7 @@ jobs:
           echo "### JSON TAGS: $JSON_TAGS"
           echo "tags=$JSON_TAGS" >> $GITHUB_OUTPUT
   get_tag_version:
-    name: Get New Versions for Tags
+    name: Get New Versions for Tag
     runs-on: ubuntu-latest
     needs: get_tags_to_update
     if: ${{ ! startsWith(needs.get_tags_to_update.outputs.tags, '[]') }}
