@@ -40,7 +40,7 @@ jobs:
           echo "### CHANGED FILES"
           cat changed-files.txt
 
-          grep -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt
+          grep -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt || true
           echo "### PREFIXES MATCHING CHANGED FILES"
           cat matching-prefixes.txt
 
