@@ -28,13 +28,13 @@ jobs:
         env:
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
-          echo "### TAGS"
+          echo "### TAGS BY UNIQUE PREFIX"
           git tag --list | sort \
             | perl -nE 'chomp; ($t,$v) = ($_ =~ m|(.*)/([^/]*)$|); $x{"$t"}=$v; END{say; say "$_/$x{$_}" for keys %x}' \
             > tags.txt
           cat tags.txt
 
-          echo "### TAG PREFIXES"
+          echo "### TAG/DIR PREFIXES"
           sed 's|/[^/]*$||' tags.txt | sort -u > tag-prefixes.txt
           cat tag-prefixes.txt
 
