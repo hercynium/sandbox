@@ -47,7 +47,7 @@ jobs:
           cat matching-prefixes.txt
 
           echo "### TAGS TO UPDATE"
-          grep -f matching-prefixes.txt tags.txt > tags-to-update.txt
+          grep -f matching-prefixes.txt tags.txt > tags-to-update.txt || true
           cat tags-to-update.txt
 
       - name: get tags to update
