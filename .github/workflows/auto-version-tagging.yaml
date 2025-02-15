@@ -33,7 +33,7 @@ jobs:
           cat tags.txt
 
           echo "### TAG PREFIXES"
-          git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
+          git tag --list | sed 's|/[^/]*$||' | sort -r > tag-prefixes.txt
           cat tag-prefixes.txt
 
           echo "### CHANGED FILES"
@@ -41,7 +41,7 @@ jobs:
           cat changed-files.txt
 
           echo "### PREFIXES MATCHING CHANGED FILES"
-          grep -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt
+          grep -m 1 -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt
           cat matching-prefixes.txt
 
           echo "### TAGS TO UPDATE"
