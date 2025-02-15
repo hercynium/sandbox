@@ -57,6 +57,7 @@ jobs:
   get_tag_version:
     runs-on: ubuntu-latest
     needs: get_tags_to_update
+    if: ${{ ! startsWith(needs.get_tags_to_update.outputs.tags, '[]') }}
     strategy:
       matrix:
           tag: ${{fromJSON(needs.get_tags_to_update.outputs.tags)}}
