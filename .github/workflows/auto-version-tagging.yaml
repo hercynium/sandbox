@@ -80,3 +80,10 @@ jobs:
         run: |
           echo "NEW_VERSION: ${{ steps.bump_version.outputs.next-version }}"
           echo "TAG_BASE: ${{ steps.get_version.outputs.tag_base }}"
+      - name: Create or update major version
+        uses: joutvhu/create-tag@v1
+        with:
+          tag_name: "${{ steps.get_version.outputs.tag_base }}/${{ steps.bump_version.outputs.next-version }}"
+          on_tag_exists: update
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
