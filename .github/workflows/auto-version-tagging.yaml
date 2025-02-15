@@ -29,11 +29,13 @@ jobs:
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
           echo "### TAGS"
-          git tag --list | sort -r > tags.txt
+          git tag --list | sort \
+            | perl -nE 'chomp; ($t,$v) = ($_ =~ m|(.*)/([^/]*)$|); $x{"$t"}=$v; END{say; say "$_/$x{$_}" for keys %x}' \
+            > tags.txt
           cat tags.txt
 
           echo "### TAG PREFIXES"
-          git tag --list | sed 's|/[^/]*$||' > tag-prefixes.txt
+          sed 's|/[^/]*$||' tags.txt | sort -u > tag-prefixes.txt
           cat tag-prefixes.txt
 
           echo "### CHANGED FILES"
@@ -45,7 +47,7 @@ jobs:
           cat matching-prefixes.txt
 
           echo "### TAGS TO UPDATE"
-          grep -m 1 -f matching-prefixes.txt tags.txt > tags-to-update.txt
+          grep -f matching-prefixes.txt tags.txt > tags-to-update.txt
           cat tags-to-update.txt
 
       - name: get tags to update
