@@ -15,13 +15,13 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # OR "2" -> To retrieve the preceding commit.
+          fetch-depth: 0
           fetch-tags: true  # to ensure we get tags
       - name: get changed files
         id: changed-files
         uses: tj-actions/changed-files@v45
-        with:
-          files_from_source_file: 'auto-tag-dirs.txt'
+        # with:
+        #   files_from_source_file: 'auto-tag-dirs.txt'
       - name: analyze changes and tags
         env:
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
