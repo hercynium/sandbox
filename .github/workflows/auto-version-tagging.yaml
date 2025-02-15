@@ -61,9 +61,6 @@ jobs:
     strategy:
       matrix:
           tag: ${{fromJSON(needs.get_tags_to_update.outputs.tags)}}
-    # outputs:
-    #   version: ${{ steps.get_version.outputs.version }}
-    #   tag_base: ${{ steps.get_version.outputs.tag_base }}
     steps:
       - id: get_version
         env:
