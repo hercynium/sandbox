@@ -7,7 +7,7 @@ on:
 
 jobs:
   get_tags_to_update:
-    runs-on: ubuntu-latest  # windows-latest || macos-latest
+    runs-on: ubuntu-latest
     name: Get Tags to Update
     outputs:
       tags: ${{ steps.get_tags_as_json.outputs.tags }}
@@ -26,24 +26,31 @@ jobs:
         env:
           CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
         run: |
+          # list tags sorted, split into prefix => version, and store in hash keyed by prefix.
+          # For each prefix, output the tag with the highest version (as that will be the last
+          # one stored for each prefix)
           git tag --list | sort \
             | perl -nE 'chomp; ($t,$v) = ($_ =~ m|(.*)/([^/]*)$|); $x{"$t"} = $v; END{ say "$_/$x{$_}" for keys %x }' \
             > tags.txt
           echo "### TAGS BY UNIQUE PREFIX"
           cat tags.txt
 
+          # get just the prefixes for the tags collected in the previous step
           sed 's|/[^/]*$||' tags.txt | sort -u > tag-prefixes.txt
           echo "### TAG/DIR PREFIXES"
           cat tag-prefixes.txt
 
+          # store the list of changed files so we can process it
           echo "${CHANGED_FILES}" > changed-files.txt
           echo "### CHANGED FILES"
           cat changed-files.txt
 
+          # find the tag prefixes matching files that changed
           grep -o -f tag-prefixes.txt changed-files.txt > matching-prefixes.txt || true
           echo "### PREFIXES MATCHING CHANGED FILES"
           cat matching-prefixes.txt
 
+          # for those prefixes, find the matching full tags
           grep -f matching-prefixes.txt tags.txt > tags-to-update.txt || true
           echo "### TAGS TO UPDATE"
           cat tags-to-update.txt
@@ -51,6 +58,7 @@ jobs:
       - name: get tag list as json
         id: get_tags_as_json
         run: |
+          # convert the tags into json to use as the input to the matrix of the next job
           JSON_TAGS="$(jq -R -s -c 'split("\n") | del(.[-1])' < tags-to-update.txt)"
           echo "### JSON TAGS: $JSON_TAGS"
           echo "tags=$JSON_TAGS" >> $GITHUB_OUTPUT
