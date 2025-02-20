@@ -11,7 +11,8 @@ jobs:
     name: Get Options from Commit Message
     steps:
       - name: get workflow options
-        run: jq . < "${{ github.event_path }}"
+        run: |
+          jq '.head_commit.message' < "${{ github.event_path }}"
 
   get_tags_to_update:
     runs-on: ubuntu-latest
