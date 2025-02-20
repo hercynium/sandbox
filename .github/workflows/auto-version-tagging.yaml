@@ -3,9 +3,16 @@ name: Update Version Tags for Changed Files
 on:
   push:
     branches:
-    - main
+      - main
 
 jobs:
+  get_options_from_commit_message:
+    runs-on: ubuntu-latest
+    name: Get Options from Commit Message
+    steps:
+      - name: get workflow options
+        run: jq . < "${{ github.event_path }}"
+
   get_tags_to_update:
     runs-on: ubuntu-latest
     name: Get Tags to Update
