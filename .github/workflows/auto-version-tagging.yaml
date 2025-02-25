@@ -45,7 +45,7 @@ jobs:
           cat tags.txt
 
           # get just the prefixes for the tags collected in the previous step
-          sed 's|/[^/]*$||' tags.txt | sort -u > tag-prefixes.txt
+          sed 's|/[^/]*$|/|' tags.txt | sort -u > tag-prefixes.txt
           echo "### TAG/DIR PREFIXES"
           cat tag-prefixes.txt
 
