@@ -11,4 +11,3 @@ plugins {
 }
 
 rootProject.name = "otel-java"
-include("app")

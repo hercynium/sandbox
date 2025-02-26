@@ -32,6 +32,7 @@ application {
 val agent = configurations.create("agent")
 
 dependencies {
+    implementation("io.opentelemetry.contrib:opentelemetry-runtime-attach:1.44.0-alpha")
     implementation("io.opentelemetry.instrumentation:opentelemetry-instrumentation-annotations:2.13.1")
     agent("io.opentelemetry.javaagent:opentelemetry-javaagent:2.13.1")
 }
@@ -44,5 +45,5 @@ val copyAgent = tasks.register<Copy>("copyAgent") {
 
 tasks.named<JavaExec>("run") {
     dependsOn(copyAgent)
-    environment("JAVA_TOOL_OPTIONS", "-javaagent:" + "build/agent/opentelemetry-javaagent.jar")
+    //environment("JAVA_TOOL_OPTIONS", "-javaagent:" + "build/agent/opentelemetry-javaagent.jar")
 }
