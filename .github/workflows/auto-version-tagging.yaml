@@ -7,16 +7,22 @@ on:
 
 jobs:
   get_options_from_commit_message:
-    runs-on: ubuntu-latest
+    runs-on: ["sre", "ubuntu-latest"]
     name: Get Options from Commit Message
     steps:
       - name: get workflow options
         run: |
           jq . < "${{ github.event_path }}"
           jq '.head_commit.message' < "${{ github.event_path }}"
-
+      - name: add comment on PR
+        uses:  Kitchen/RE-thirdparty-actions/actions/add-pr-comment@main
+        with:
+          message: |
+            Hello world ! :wave:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          #repo-token-user-login: 'github-actions[bot]'
   get_tags_to_update:
-    runs-on: ubuntu-latest
+    runs-on: ["sre", "ubuntu-latest"]
     name: Get Tags to Update
     outputs:
       tags: ${{ steps.get_tags_as_json.outputs.tags }}
