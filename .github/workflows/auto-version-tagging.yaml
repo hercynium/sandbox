@@ -15,7 +15,7 @@ jobs:
           jq . < "${{ github.event_path }}"
           jq '.head_commit.message' < "${{ github.event_path }}"
       - name: add comment on PR
-        uses:  Kitchen/RE-thirdparty-actions/actions/add-pr-comment@main
+        uses: mshick/add-pr-comment@v2
         with:
           message: |
             Hello world ! :wave:
