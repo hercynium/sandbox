@@ -7,7 +7,7 @@ on:
 
 jobs:
   get_options_from_commit_message:
-    runs-on: ["sre", "ubuntu-latest"]
+    runs-on: ubuntu-latest
     name: Get Options from Commit Message
     steps:
       - name: get workflow options
@@ -22,7 +22,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           #repo-token-user-login: 'github-actions[bot]'
   get_tags_to_update:
-    runs-on: ["sre", "ubuntu-latest"]
+    runs-on: ubuntu-latest
     name: Get Tags to Update
     outputs:
       tags: ${{ steps.get_tags_as_json.outputs.tags }}
